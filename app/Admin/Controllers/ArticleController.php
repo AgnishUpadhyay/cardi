@@ -90,7 +90,7 @@ class ArticleController extends AdminController
         $adminId = Auth::id();
         $form->hidden('admin_id')->value($adminId);
 
-        $form->multipleSelect('category_id', 'Options')->options($options)->required();
+        // $form->multipleSelect('category_id', 'Options')->options($options)->required();
         // $form->saved(function (Form $form) {
         //     $post = $form->model(); 
         //     $post->saveFormData($form);
