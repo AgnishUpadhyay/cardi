@@ -18,8 +18,31 @@ class PostController extends Controller
         $posts = Post::getHomepageListing($keyword);
         return view('welcome', ['posts' => $posts]);
     }
+    // public function detailPost(Post $post)
+    // {
+    //     return view('detail', ['post'=>$post]);
+    // }
+    // public function nextArticle(Post $post)
+    // {
+    //     $nextArticle = Post::where('id', '>', $post->id)->orderBy('id', 'asc')->first();
+    //     return response()->json([
+    //         'nextArticle' => $nextArticle
+    //     ]);
+    // }
     public function detailPost(Post $post)
     {
-        return view('detail', ['post'=>$post]);
+        $nextArticle = Post::where('id', '>', $post->id)->first();
+        return view('detail', [
+            'post' => $post,
+            'nextArticle' => $nextArticle,
+        ]);
+    }
+
+    public function nextArticle(Post $post)
+    {
+        $nextArticle = Post::where('id', '>', $post->id)->first();
+        return response()->json([
+            'nextArticle' => $nextArticle,
+        ]);
     }
 }

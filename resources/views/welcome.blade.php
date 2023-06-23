@@ -76,14 +76,14 @@
                         <span class="navbar-caption-wrap"><a class="navbar-caption mbr-bold text-white display-7" href="../index.html">Cardinal Report</a></span>
                      </div>
                      <div class="icons-menu">
-                        <a href="https://mobiri.se" target="_blank" class="icons-wrapper">
+                        <a href="https://www.facebook.com/agnish.upadhyay.1602003/" target="_blank" class="icons-wrapper">
                         <span class="mbr-iconfont p-2 socicon-facebook socicon"></span>
                         </a>
-                        <a href="https://mobiri.se" target="_blank" class="icons-wrapper">
+                        <a href="https://www.instagram.com/just_call_me_dh/" target="_blank" class="icons-wrapper">
                         <span class="mbr-iconfont p-2 socicon-instagram socicon"></span>
                         </a>
-                        <a href="https://mobiri.se" target="_blank" class="icons-wrapper">
-                        <span class="mbr-iconfont p-2 socicon-twitter socicon"></span>
+                        <a href="https://www.reddit.com/user/bestest_infested/" target="_blank" class="icons-wrapper">
+                        <span class="mbr-iconfont p-2 socicon-reddit socicon"></span>
                         </a>
                      </div>
                      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
@@ -208,7 +208,7 @@
                               <div class="card_topic">
                                  <span class="category_content mbr-fonts-style display-4"><strong>Trending</strong></span>
                                  <span class="mbr-iconfont mobi-mbri-clock mobi-mbri"></span>
-                                 <span class="category_estimate mbr-medium mbr-fonts-style display-4">6 min read</span>
+                                 <span class="category_estimate mbr-medium mbr-fonts-style display-4">{{max(3, min(10,ceil(str_word_count($post->content)/70)))}} min read</span>
                               </div>
                               <h5 class="item-title mbr-fonts-style display-7"><strong><a href="/detail/{{$post->id}}" class="text-white">{{strip_tags($post->title)}}</a></strong></h5>
                            </div>

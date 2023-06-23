@@ -19,7 +19,7 @@
     <link rel="stylesheet" href="https://mobirise.com/extensions/newsm4/technews/assets/recaptcha.css">
     <link rel="preload" as="style" href="https://mobirise.com/extensions/newsm4/technews/assets/mobirise/css/mbr-additional.css">
     <link rel="stylesheet" href="https://mobirise.com/extensions/newsm4/technews/assets/mobirise/css/mbr-additional.css" type="text/css">
-
+      
     <style>
         body {
             background-color: #1a191d;
@@ -118,14 +118,14 @@
                             <span class="navbar-caption-wrap"><a class="navbar-caption mbr-bold text-white display-7" href="../index.html">Cardinal Report</a></span>
                         </div>
                         <div class="icons-menu">
-                            <a href="https://mobiri.se" target="_blank" class="icons-wrapper">
-                                <i class="mbr-iconfont p-2 socicon-facebook socicon"></i>
+                            <a href="https://www.facebook.com/agnish.upadhyay.1602003/" target="_blank" class="icons-wrapper">
+                            <span class="mbr-iconfont p-2 socicon-facebook socicon"></span>
                             </a>
-                            <a href="https://mobiri.se" target="_blank" class="icons-wrapper">
-                                <i class="mbr-iconfont p-2 socicon-instagram socicon"></i>
+                            <a href="https://www.instagram.com/just_call_me_dh/" target="_blank" class="icons-wrapper">
+                            <span class="mbr-iconfont p-2 socicon-instagram socicon"></span>
                             </a>
-                            <a href="https://mobiri.se" target="_blank" class="icons-wrapper">
-                                <i class="mbr-iconfont p-2 socicon-twitter socicon"></i>
+                            <a href="https://www.reddit.com/user/bestest_infested/" target="_blank" class="icons-wrapper">
+                            <span class="mbr-iconfont p-2 socicon-reddit socicon"></span>
                             </a>
                         </div>
                     </div>
@@ -134,7 +134,7 @@
         </nav>
     </section>
 
-    <div class="article-container">
+    <div class="article-container" id="articleContainer">
     <h1 class="article-title text-center">{{$post->title}}</h1>
     <img class="bd-placeholder-img card-img-top" width="100%" height="auto" src = "{{asset('uploads/'.$post->image)}}" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/></img>
     <br>
@@ -148,6 +148,7 @@
                 $duration = $lastEdit->diffForHumans();
             @endphp
             <p>Last edit: {{$duration}}</p>
+            <button id="loadNextArticleBtn" class="btn btn-primary">Next up..</button>
         </div>
     </div>
 
@@ -168,5 +169,84 @@
     <script src="https://mobirise.com/extensions/newsm4/technews/assets/touchswipe/jquery.touch-swipe.min.js"></script>
     <script src="https://mobirise.com/extensions/newsm4/technews/assets/theme/js/script.js"></script>
     <script src="https://mobirise.com/extensions/newsm4/technews/assets/formoid.min.js"></script>
+     
+    <!-- ajax -->
+    <script>
+        var currentArticleId = {{$post->id}};
+        var isLoadingNextArticle = false;
+        var postEnd = false;
+
+        function loadNextArticle() {
+            if (isLoadingNextArticle) {
+                return;
+            }
+            isLoadingNextArticle = true;
+
+            var xhr = new XMLHttpRequest();
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === XMLHttpRequest.DONE) {
+                    if (xhr.status === 200) {
+                        var nextArticleData = JSON.parse(xhr.responseText);
+                        // console.log(111, nextArticleData);
+                        if (nextArticleData.nextArticle) {
+                            var nextArticle = nextArticleData.nextArticle;
+                            var nextArticleContainer = document.createElement('div');
+                            nextArticleContainer.innerHTML = "<h1 class='article-title text-center'>" + nextArticle.title + "</h1>" +
+                                "<img class='bd-placeholder-img card-img-top' width='100%' height='auto' src='{{ asset('uploads/') }}/" + nextArticle.image + "' role='img' aria-label='Placeholder: Thumbnail' preserveAspectRatio='xMidYMid slice' focusable='false'><title>Placeholder</title><rect width='100%' height='100%' fill='#55595c'/></img>" +
+                                "<br><p class='article-excerpt'>" + nextArticle.excerpt + "</p>" +
+                                "<p class='article-content'>" + nextArticle.content + "</p>" +
+                                "<hr><div class='article-meta'><p>Last edit: " + lastEdit(nextArticle.updated_at) + "</p><button id='loadNextArticleBtn' class='btn btn-primary'>Next up..</button></div>";
+
+                            document.querySelector('.article-container').appendChild(nextArticleContainer);
+                            currentArticleId = nextArticle.id;
+                            // console.log(222, nextArticle);
+                            isLoadingNextArticle = false;
+                        } else {
+                            alert('No more articles available.');
+                            isLoadingNextArticle = false;
+                            postEnd = true;
+                        }
+                    } else {
+                        console.error('Error loading next article.');
+                        isLoadingNextArticle = false;
+                    }
+                }
+            };
+            // console.log(3333, currentArticleId);
+
+            xhr.open('GET', '/detail/'+currentArticleId+'/next-article', true);
+            xhr.send();
+        }
+
+        function lastEdit(updatedAt) 
+        {
+            var now = new Date();
+            var lastEdit = new Date(updatedAt);
+            var timeDifference = now.getTime() - lastEdit.getTime();
+            var seconds = Math.floor(timeDifference / 1000);
+            var minutes = Math.floor(seconds / 60);
+            var hours = Math.floor(minutes / 60);
+            var days = Math.floor(hours / 24);
+
+            if (days > 0) { return days + " days ago"; } 
+            else if (hours > 0) { return hours + " hours ago"; } 
+            else if (minutes > 0) { return minutes + " minutes ago"; }
+            else { return seconds + " seconds ago"; }
+        }
+
+        function handleScroll() 
+        {
+            if(!postEnd) {
+                var scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+                var windowHeight = window.innerHeight || document.documentElement.clientHeight;
+                var documentHeight = document.documentElement.scrollHeight;
+                var scrollPercentage = (scrollTop + windowHeight) / documentHeight * 100;
+                if (scrollPercentage >= 75) {
+                    loadNextArticle();
+                }
+            }
+        }
+        window.addEventListener('scroll', handleScroll);
+    </script>
 </body>
 </html>
