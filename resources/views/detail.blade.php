@@ -199,7 +199,6 @@
 
                             document.querySelector('.article-container').appendChild(nextArticleContainer);
                             currentArticleId = nextArticle.id;
-                            // console.log(222, nextArticle);
                             isLoadingNextArticle = false;
                         } else {
                             alert('No more articles available.');
