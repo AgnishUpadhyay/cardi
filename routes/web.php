@@ -20,3 +20,5 @@ Route::get('/detail/{post}', [PostController::class, 'detailPost']);
 Route::get('/search', [PostController::class, 'search'])->name('search');
 Route::post('/subscribe', [NewsletterController::class, 'subscribe'])->name('subscribe');
 
+Auth::routes();
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');

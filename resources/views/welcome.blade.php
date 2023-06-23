@@ -59,6 +59,10 @@
       .custom-button {
          margin-left: 10px;
       }
+      .navbar-buttons {
+         display: flex;
+         align-items: center;
+      }
       </style>
    </head>
    <body>
@@ -105,8 +109,33 @@
                   </ul>
 
                   <div class="navbar-buttons">
-          <a href="#" class="btn btn-sm btn-secondary display-4 custom-button">Login</a>
-        </div>
+                     <div class="user-info">
+                        @auth
+                        @php
+                              $userType = Auth::user()->type;
+                              $buttonStyle = $userType == 0 ? 'background-color: green;' : 'background-color: #FF4500; color:white';
+                        @endphp
+                        <button class="btn btn-sm display-4 custom-button" style="{{ $buttonStyle }}; cursor:default">
+                              <span>{{ explode(' ', Auth::user()->name)[0] }}</span>
+                        </button>
+                        @else
+                        <button class="btn btn-sm btn-secondary display-4 custom-button" style = "cursor:default">Guest</button>
+                        @endauth
+                     </div>
+
+                     <div class="user-actions">
+                           @auth
+                              <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                 @csrf
+                              </form>
+                              <button class="btn btn-sm btn-secondary display-4 custom-button" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">
+                                 Logout
+                              </button>
+                           @else
+                              <a href="{{ route('login') }}" class="btn btn-sm btn-secondary display-4 custom-button">Login</a>
+                           @endauth
+                     </div>
+                  </div>
                   </div>
                </div>
             </div>

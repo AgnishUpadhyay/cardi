@@ -14,5 +14,7 @@ Route::group([
     $router->get('/', 'HomeController@index')->name('home');
     $router->resource('articles', ArticleController::class);
     $router->resource('post-types', PostTypeController::class);
-    $router->post('/', 'ArticleController@store');
+    // $router->post('/', 'ArticleController@store');
 });
+
+// Route::post('/subscribe', [NewsletterController::class, 'subscribe'])->name('subscribe');

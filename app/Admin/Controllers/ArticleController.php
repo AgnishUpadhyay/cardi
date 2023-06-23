@@ -76,7 +76,6 @@ class ArticleController extends AdminController
                 $options[$row['id']] = $row['title'];
             }
         }
-        #$form->select('options', 'Options')->options($options)->attribute('multiple');
         // $form->setAction('/admin/articles/store');
         $form->text('title', __('Title'))->required();
         $form->text('excerpt', __('Excerpt'));
@@ -91,14 +90,12 @@ class ArticleController extends AdminController
         $form->hidden('admin_id')->value($adminId);
 
         // $form->multipleSelect('category_id', 'Options')->options($options)->required();
-        // $form->saved(function (Form $form) {
-        //     $post = $form->model(); 
-        //     $post->saveFormData($form);
+
+        // $form->saving(function (Form $form) {
+        //     // $post = $form->model();
+        //     // $post->
+        //     $form->model()->saveFormData($form);
         // });
-        $form->saving(function (Form $form) {
-            $post = $form->model();
-            $post->saveFormData($form);
-        });
         return $form;
     }
 }

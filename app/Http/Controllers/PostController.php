@@ -7,9 +7,16 @@ use App\Models\Post;
 
 class PostController extends Controller
 {
-    public function index(){
-        $posts = Post::getHomepageListing();
+    public function index()
+    {
+        $posts = Post::getHomepageListing("");
         return view('welcome', ['posts'=>$posts]);
+    }
+    public function search(Request $request)
+    {
+        $keyword = $request->input('keyword');
+        $posts = Post::getHomepageListing($keyword);
+        return view('welcome', ['posts' => $posts]);
     }
     public function detailPost(Post $post)
     {
