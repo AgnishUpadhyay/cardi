@@ -313,7 +313,8 @@
             }
          </script>
          <script>
-            document.getElementById('subscribe-iframe').addEventListener('load', function() {
+            document.getElementById('subscribe-iframe').addEventListener('load', function() 
+            {
                var iframe = this;
                var iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
                var responseData = iframeDocument.body.innerHTML;

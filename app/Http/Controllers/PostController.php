@@ -31,7 +31,7 @@ class PostController extends Controller
     // }
     public function detailPost(Post $post)
     {
-        $nextArticle = Post::where('id', '>', $post->id)->first();
+        $nextArticle = Post::where('id', '>', $post->id)->where('released', '>', 0)->first();
         return view('detail', [
             'post' => $post,
             'nextArticle' => $nextArticle,
@@ -40,7 +40,7 @@ class PostController extends Controller
 
     public function nextArticle(Post $post)
     {
-        $nextArticle = Post::where('id', '>', $post->id)->first();
+        $nextArticle = Post::where('id', '>', $post->id)->where('released', '>', 0)->first();
         return response()->json([
             'nextArticle' => $nextArticle,
         ]);
