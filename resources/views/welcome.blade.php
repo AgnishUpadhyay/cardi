@@ -127,7 +127,7 @@
                         </div>
                         <div>
                            <p class="mbr-text mbr-fonts-style display-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Maxime inventore repudiandae odio quod nesciunt cum voluptates. Eveniet, aliquam. Accusantium, accusamus autem omnis numquam iure dolorum tempore hic, totam eum quos distinctio mollitia adipisci esse perferendis, perspiciatis nobis! Quo quam rem sed eveniet. Consequuntur officia error accusantium amet modi cum aliquam?</p>
-                           <div class="mbr-section-btn"><a class="btn btn-white-outline display-4" href="#">Read More<span class="mobi-mbri mobi-mbri-right mbr-iconfont mbr-iconfont-btn"></span></a></div>
+                           <div class="mbr-section-btn"><a class="btn btn-white-outline display-4" href="#latest-news-section">View news<span class="mobi-mbri mobi-mbri-right mbr-iconfont mbr-iconfont-btn"></span></a></div>
                         </div>
                      </div>
                   </div>
@@ -141,11 +141,17 @@
                <div class="col-12 col-sm-6">
                   <div class="mbr-section-head">
                      <h4 class="mbr-section-subtitle mbr-semibold mbr-fonts-style display-4">FROM ALL REALMS</h4>
-                     <h3 class="mbr-section-title mb-0 mbr-fonts-style display-5"><strong>LATEST NEWS</strong></h3>
+                     <h3 class="mbr-section-title mb-0 mbr-fonts-style display-5" id="latest-news-section"><strong>LATEST NEWS</strong></h3>
                   </div>
                </div>
                <div class="col-12 col-sm-6">
-                  <div class="mbr-section-btn text-left text-sm-right"><a class="btn btn-primary display-4" href="#">Read More<span class="mobi-mbri mobi-mbri-right mbr-iconfont mbr-iconfont-btn"></span></a></div>
+                  <div class="mbr-section-btn text-left text-sm-right"><a id="findNewsButton" class="btn btn-primary display-4" href="#" onclick="event.preventDefault(); showInputField();">Find News<span class="mobi-mbri mobi-mbri-search mbr-iconfont mbr-iconfont-btn"></span></a></div>
+               </div>
+               <div id="inputFieldContainer" style="display: none;">
+                  <form id="searchForm" action="{{ route('search') }}" method="GET" onsubmit="scrollToResults(event)">
+                     <input type="text" name="keyword" id="keywordInput" placeholder="Enter keyword" />
+                     <button type="submit">Search</button>
+                  </form>
                </div>
             </div>
             <div class="row">
@@ -175,7 +181,7 @@
                                  <span class="mbr-iconfont mobi-mbri-clock mobi-mbri"></span>
                                  <span class="category_estimate mbr-medium mbr-fonts-style display-4">6 min read</span>
                               </div>
-                              <h5 class="item-title mbr-fonts-style display-7"><strong><a href="/detail/{{$post->id}}" class="text-white">{{strip_tags($post->content)}}</a></strong></h5>
+                              <h5 class="item-title mbr-fonts-style display-7"><strong><a href="/detail/{{$post->id}}" class="text-white">{{strip_tags($post->title)}}</a></strong></h5>
                            </div>
                            <div class="mbr-section-btn"><a class="btn btn-white-outline display-4" href="/detail/{{$post->id}}">Read More<span class="mobi-mbri mobi-mbri-right mbr-iconfont mbr-iconfont-btn"></span></a></div>
                         </div>
@@ -203,22 +209,17 @@
                   <h4 class="mbr-section-subtitle mbr-semibold mbr-fonts-style display-4">Stay informed with us</h4>
                   <h3 class="mbr-section-title mbr-fonts-style display-5"><strong>Stay up to date with news from all over the world.</strong></h3>
                   <p class="mbr-text mbr-fonts-style display-4">Sign up for our Newsletter!</p>
-                  <div class="subscribe_form" data-form-type="formoid">
+                  <div id="success-message" style="display: none; color: green; font-weight: bold"></div>
+                  <div>
                      <!---Formbuilder Form--->
-                     <form action="https://mobirise.eu/" method="POST" class="mbr-form form-with-styler" data-form-title="Mobirise Form">
-                        <input type="hidden" name="email" data-form-email="true" value="WsR4lFawNOs3D9YxDrON0/Ch0zADLLgiuTCkh0kGciEtwJaE8/JdrxS1J8+WLz127Wo4LIupTTBuTmizeF3YL8lNsF+bqjZ3960SPknAObw5Bu6J9bj6HcJkI3DdQOmh">
-                        <div class="row">
-                           <div hidden="hidden" data-form-alert="" class="alert alert-success col-12">Thanks for filling out the form!</div>
-                           <div hidden="hidden" data-form-alert-danger="" class="alert alert-danger col-12">
-                           </div>
+                     <form id = "subscribe-form" action="{{ route('subscribe') }}" method="POST" target="subscribe-iframe">
+                        @csrf
+                        <div class="form-group">
+                           <input type="email" name="email" class="form-control" placeholder="Enter your email address" required>
                         </div>
-                        <div class="dragArea row">
-                           <div class="form-group col-12 col-sm-8" data-for="email">
-                              <input type="email" name="email" placeholder="Your email adress" data-form-field="Email" required="required" class="form-control display-4" id="email-form2-c">
-                           </div>
-                           <div class="col-12 col-sm-4 input-group-btn mt-3 mt-sm-0"><button type="submit" class="btn btn-primary display-4">Subscribe</button></div>
-                        </div>
+                        <button type="submit" class="btn btn-primary" style="margin-top: 10px">Subscribe</button>
                      </form>
+                     <iframe id="subscribe-iframe" name="subscribe-iframe" style="display: none;"></iframe>
                      <!---Formbuilder Form--->
                   </div>
                </div>
@@ -255,6 +256,7 @@
       <script src="https://mobirise.com/extensions/newsm4/technews/assets/touchswipe/jquery.touch-swipe.min.js"></script>
       <script src="https://mobirise.com/extensions/newsm4/technews/assets/theme/js/script.js"></script>
       <script src="https://mobirise.com/extensions/newsm4/technews/assets/formoid.min.js"></script>
+      <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
       <!-- Google Tag Manager-->
       <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
          new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
@@ -269,5 +271,32 @@
          <noscript><iframe src="//www.googletagmanager.com/ns.html?id=GTM-PFK425"
             height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
          <!-- End Google Tag Manager -->
+         <script>
+            function showInputField() {
+               document.getElementById("inputFieldContainer").style.display = "block";
+            }
+            function submitForm(event) {
+               event.preventDefault();
+               const formElement = document.getElementById("searchForm");
+               const keywordInput = document.getElementById("keywordInput");
+               formElement.action = "{{ route('search') }}?keyword=" + encodeURIComponent(keywordInput.value);
+               formElement.submit();
+            }
+         </script>
+         <script>
+            document.getElementById('subscribe-iframe').addEventListener('load', function() {
+               var iframe = this;
+               var iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
+               var responseData = iframeDocument.body.innerHTML;
+               console.log(responseData);
+               document.getElementById('subscribe-form').reset();
+               var successMessage = document.getElementById('success-message');
+               successMessage.textContent = 'Successfully subscribed!';
+               successMessage.style.display = 'block';
+               setTimeout(function() {
+                     successMessage.style.display = 'none';
+               }, 2500);
+            });
+         </script>
    </body>
 </html>
