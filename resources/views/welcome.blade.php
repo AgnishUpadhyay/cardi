@@ -141,6 +141,7 @@
             </div>
          </nav>
       </section>
+      
       <section class="features3 cid-sa69ignI5y" id="features3-2">
          <div>
             <div class="row">
@@ -164,6 +165,60 @@
             </div>
          </div>
       </section>
+      @auth
+    @php
+        $userType = Auth::user()->type;
+    @endphp
+
+    @if ($userType == 0)
+    <section class="features3 cid-sa6etrijTb" id="features3-5">
+    
+        <div>
+            
+            <div class="row">
+                <div class="item features-image сol-12 col-lg-6">
+                    <div class="item-wrapper">
+                        <div class="item-img">
+                            <img src="images/sukuna.jpg" alt="" title="">
+                        </div>
+                        <div class="item-content text-white">
+                            <div>
+                                <h5 class="item-subtitle mbr-semibold mbr-fonts-style display-4">Exclusive Article</h5>
+                                <h4 class="item-title mb-3 mbr-fonts-style display-5"><strong><a href="#" class="text-white">You just need to try this new product</a></strong></h4>
+                            </div>
+                            <div>
+                             <p class="mbr-text mbr-fonts-style display-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Neque distinctio sint modi asperiores placeat quam</p>
+                            <div class="mbr-section-btn"><a class="btn btn-white-outline display-4" href="#">Read More<span class="mobi-mbri mobi-mbri-right mbr-iconfont mbr-iconfont-btn"></span></a></div>
+                                </div>
+                        </div>
+                        </div>
+                            
+                    </div>
+                    <div class="item features-image сol-12 col-lg-6">
+                    <div class="item-wrapper">
+                        <div class="item-img">
+                            <img src="images/dem.jpeg" alt="" title="">
+                        </div>
+                        <div class="item-content text-white">
+                            <div>
+                                <h5 class="item-subtitle mbr-semibold mbr-fonts-style display-4">Exclusive Article</h5>
+                                <h4 class="item-title mb-3 mbr-fonts-style display-5"><strong><a href="#" class="text-white">After reading the article, you will become a savvy in this area, a real expert</a></strong></h4>
+                            </div>
+                            <div>
+                             <p class="mbr-text mbr-fonts-style display-4">Lorem ipsum dolor sit amet, consectetur adipisicing elit. Neque distinctio sint modi asperiores placeat quam</p>
+                            <div class="mbr-section-btn"><a class="btn btn-white-outline display-4" href="#">Read More<span class="mobi-mbri mobi-mbri-right mbr-iconfont mbr-iconfont-btn"></span></a></div>
+                                </div>
+                        </div>
+                        </div>
+                            
+                    </div>
+                
+                
+            </div>
+        </div>
+    </section>
+    @endif
+@endauth
       <section class="features5 cid-sa6fpttrbS" id="features5-6">
          <div class="container-fluid">
             <div class="row align-items-end mb-4">

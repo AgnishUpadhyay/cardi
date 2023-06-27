@@ -3,6 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <meta property="og:title" content="{{$post->title}}">
+    <meta property="og:description" content="Check out this article on {{$post->title}} by Cardinal Report">
+    <meta property="og:image" content="{{url('/')}}/uploads/{{$post->image}}">
+    <meta property="og:url" content="{{url()->current()}}">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="{{$post->title}}">
+    <meta name="twitter:description" content="Check out this article on {{$post->title}} by Cardinal Report">
+    <meta name="twitter:image" content="{{url('/')}}/uploads/{{$post->image}}">
+    
     <title>Blog Article</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.6.1/font/bootstrap-icons.css">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
@@ -97,6 +107,36 @@
         .article-meta a:hover {
             color: #333;
         }
+
+        .article-container {
+        position: relative;
+        }
+
+        .share-toggle-bar {
+        background-color: gray;
+        position: absolute;
+        top: 0;
+        right: -50px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        }
+
+        .share-button {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        margin-bottom: 10px;
+        transition: transform 0.2s ease;
+        }
+
+        .share-button:hover {
+        transform: scale(1.2);
+        }
+
     </style>
 </head>
 <body>
@@ -135,9 +175,10 @@
     </section>
 
     <div class="article-container" id="articleContainer">
-    <h1 class="article-title text-center">{{$post->title}}</h1>
-    <img class="bd-placeholder-img card-img-top" width="100%" height="auto" src = "{{asset('uploads/'.$post->image)}}" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false"><title>Placeholder</title><rect width="100%" height="100%" fill="#55595c"/></img>
-    <br>
+    <div class="article-content-wrapper">
+        <h1 class="article-title text-center">{{$post->title}}</h1>
+        <img class="bd-placeholder-img card-img-top" width="100%" height="auto" src="{{asset('uploads/'.$post->image)}}" role="img" aria-label="Placeholder: Thumbnail" preserveAspectRatio="xMidYMid slice" focusable="false">
+        <br>
         <p class="article-excerpt">{{$post->excerpt}}</p>
         <p class="article-content">{{strip_tags($post->content)}}</p>
         <hr>
@@ -151,6 +192,15 @@
             <button id="loadNextArticleBtn" class="btn btn-primary">Next up..</button>
         </div>
     </div>
+    <div class="share-toggle-bar">
+        <a href="https://www.facebook.com/sharer/sharer.php?u={{url()->current()}}" target="_blank" rel="noopener" class="share-button facebook">
+        <i class="fab fa-facebook-f" style="color: #1877f2; font-size: 24px;"></i> </a>
+        <a href="https://twitter.com/intent/tweet?url={{url()->current()}}&text=Check%20out%20this%20article%20on%20{{$post->title}}%20by%20Cardinal%20Report" target="_blank" rel="noopener" class="share-button twitter"> <i class="fab fa-twitter" style="color: #1da1f2; font-size: 24px;"></i> </a>
+        <a href="https://www.instagram.com/?url={{url()->current()}}" target="_blank" rel="noopener" class="share-button instagram"> <i class="fab fa-instagram" style="color: #e4405f; font-size: 24px;"></i> </a>
+        <a href="whatsapp://send?text=Check%20out%20this%20article%20on%20{{$post->title}}%20by%20Cardinal%20Report:%20{{url()->current()}}" target="_blank" rel="noopener" class="share-button whatsapp"> <i class="fab fa-whatsapp" style="color: #25d366; font-size: 24px;"></i> </a>
+    </div>
+</div>
+
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/js/bootstrap.bundle.min.js"></script>
@@ -191,10 +241,10 @@
                         if (nextArticleData.nextArticle) {
                             var nextArticle = nextArticleData.nextArticle;
                             var nextArticleContainer = document.createElement('div');
-                            nextArticleContainer.innerHTML = "<h1 class='article-title text-center'>" + nextArticle.title + "</h1>" +
+                            nextArticleContainer.innerHTML = "<h1 class='article-title text-center'>" + "<a href='/detail/" + nextArticle.id +"' style='color: inherit; text-decoration: inherit;'><u>" + nextArticle.title + "</u>"+ "<i class='external-link-icon'>&#x2197;</i>" + "</a></h1>" + 
                                 "<img class='bd-placeholder-img card-img-top' width='100%' height='auto' src='{{ asset('uploads/') }}/" + nextArticle.image + "' role='img' aria-label='Placeholder: Thumbnail' preserveAspectRatio='xMidYMid slice' focusable='false'><title>Placeholder</title><rect width='100%' height='100%' fill='#55595c'/></img>" +
                                 "<br><p class='article-excerpt'>" + nextArticle.excerpt + "</p>" +
-                                "<p class='article-content'>" + nextArticle.content + "</p>" +
+                                "<p class='article-content' style='text-decoration: inherit;'>" + stripHTMLTags(nextArticle.content) + "</p>" +
                                 "<hr><div class='article-meta'><p>Last edit: " + lastEdit(nextArticle.updated_at) + "</p><button id='loadNextArticleBtn' class='btn btn-primary'>Next up..</button></div>";
 
                             document.querySelector('.article-container').appendChild(nextArticleContainer);
@@ -215,6 +265,13 @@
 
             xhr.open('GET', '/detail/'+currentArticleId+'/next-article', true);
             xhr.send();
+        }
+
+        function stripHTMLTags(html) 
+        {
+            var temporalDivElement = document.createElement('div');
+            temporalDivElement.innerHTML = html;
+            return temporalDivElement.textContent || temporalDivElement.innerText || '';
         }
 
         function lastEdit(updatedAt) 
@@ -240,7 +297,7 @@
                 var windowHeight = window.innerHeight || document.documentElement.clientHeight;
                 var documentHeight = document.documentElement.scrollHeight;
                 var scrollPercentage = (scrollTop + windowHeight) / documentHeight * 100;
-                if (scrollPercentage >= 75) {
+                if (scrollPercentage >= 81) {
                     loadNextArticle();
                 }
             }
