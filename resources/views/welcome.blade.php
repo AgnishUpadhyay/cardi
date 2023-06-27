@@ -73,7 +73,7 @@
                   <div class="top_menu">
                      <div class="empty"></div>
                      <div class="navbar-brand">
-                        <span class="navbar-caption-wrap"><a class="navbar-caption mbr-bold text-white display-7" href="../index.html">Cardinal Report</a></span>
+                        <span class="navbar-caption-wrap"><a class="navbar-caption mbr-bold text-white display-7" href="../">Cardinal Report</a></span>
                      </div>
                      <div class="icons-menu">
                         <a href="https://www.facebook.com/agnish.upadhyay.1602003/" target="_blank" class="icons-wrapper">
