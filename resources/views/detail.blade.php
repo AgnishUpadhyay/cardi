@@ -51,7 +51,7 @@
         padding: 10px 20px;
         border-radius: 5px;
         font-weight: bold;
-        z-index: 9999;
+        z-index: 9998;
         }
         .navbar-back-button .back-icon {
         margin-right: 3px; 
