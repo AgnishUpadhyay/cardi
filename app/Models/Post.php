@@ -25,18 +25,26 @@ class Post extends Model
     public static function getHomepageListing($keyword)
     {
         $query = Post::join('admin_users', 'posts.admin_id', '=', 'admin_users.id')
-                ->select('posts.*', 'admin_users.name as admin_name', 'admin_users.avatar as admin_avatar')
-                ->where('posts.released', 1);
+            ->select('posts.*', 'admin_users.name as admin_name', 'admin_users.avatar as admin_avatar')
+            ->where('posts.released', 1);
 
-        if (!empty($keyword)) {
-            $query->where(function ($query) use ($keyword) {
+        if (!empty($keyword)) 
+        {
+            $query->where(function ($query) use ($keyword) 
+            {
                 $query->where('posts.title', 'like', '%' . $keyword . '%')
                     ->orWhere('posts.content', 'like', '%' . $keyword . '%');
             });
+
+            $query->orderByRaw("CASE 
+                WHEN posts.title LIKE '%{$keyword}%' THEN 0 
+                ELSE 1 
+                END");
         }
         $posts = $query->paginate(6);
         return $posts;
     }
+
 
 
     public function saveFormData(\Encore\Admin\Form $form)
